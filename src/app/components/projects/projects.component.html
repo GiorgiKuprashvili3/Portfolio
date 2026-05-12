@@ -1,0 +1,42 @@
+<section id="projects" class="projects-section">
+  <div class="section-header"><h2>Projects</h2></div>
+
+  <div class="tabs">
+    <button
+      *ngFor="let f of filters"
+      class="tab"
+      [ngClass]="{ 'tab--active': activeFilter() === f.value }"
+      (click)="setFilter(f.value)"
+    >{{ f.label }}</button>
+  </div>
+
+  <div class="projects-grid">
+    <article class="project-card" *ngFor="let p of filteredProjects()">
+      <div class="project-card__type" [ngClass]="{ 'project-card__type--da': p.type === 'da' }">
+        <span class="dot"></span>
+        {{ p.type === 'fe' ? 'frontend' : 'analytics' }}
+      </div>
+
+      <h3 class="project-card__title">{{ p.title }}</h3>
+      <p class="project-card__desc">{{ p.description }}</p>
+
+      <div class="project-card__tags">
+        <span
+          *ngFor="let t of p.tags"
+          class="tag"
+          [ngClass]="'tag--' + t.variant"
+        >{{ t.label }}</span>
+      </div>
+
+      <div class="project-card__links">
+        <a [href]="p.repoUrl" target="_blank" rel="noopener" class="project-link">
+          <i class="ti ti-brand-github" aria-hidden="true"></i>
+          {{ p.type === 'da' ? 'notebook' : 'repo' }}
+        </a>
+        <a *ngIf="p.liveUrl" [href]="p.liveUrl" target="_blank" rel="noopener" class="project-link">
+          <i class="ti ti-external-link" aria-hidden="true"></i> live
+        </a>
+      </div>
+    </article>
+  </div>
+</section>

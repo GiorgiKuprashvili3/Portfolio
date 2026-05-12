@@ -1,0 +1,55 @@
+.hero {
+  padding: 3rem 0 4rem;
+
+  &__tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+  }
+
+  &__name {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+
+    span { color: var(--accent); }
+  }
+
+  &__sub {
+    font-size: 14px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-bottom: 2rem;
+  }
+
+  &__desc {
+    max-width: 520px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #9ba5bc;
+    margin-bottom: 2.5rem;
+  }
+
+  &__btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}

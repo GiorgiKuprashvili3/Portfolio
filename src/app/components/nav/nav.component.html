@@ -1,0 +1,14 @@
+<nav class="nav">
+  <div class="nav__logo">GK.dev</div>
+
+  <ul class="nav__links" [ngClass]="{ 'nav__links--open': menuOpen() }">
+    <li><a href="#projects"   (click)="menuOpen.set(false)">work</a></li>
+    <li><a href="#analytics"  (click)="menuOpen.set(false)">analytics</a></li>
+    <li><a href="#skills"     (click)="menuOpen.set(false)">skills</a></li>
+    <li><a href="#contact"    (click)="menuOpen.set(false)">contact</a></li>
+  </ul>
+
+  <button class="nav__burger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()" aria-label="Toggle navigation">
+    <i class="ti" [ngClass]="menuOpen() ? 'ti-x' : 'ti-menu-2'" aria-hidden="true"></i>
+  </button>
+</nav>

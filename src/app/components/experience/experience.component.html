@@ -1,0 +1,14 @@
+<section class="exp-section">
+  <div class="section-header"><h2>Experience</h2></div>
+
+  <div class="exp-item" *ngFor="let e of experiences">
+    <div class="exp-item__date">{{ e.dateRange }}</div>
+    <div class="exp-item__body">
+      <div class="exp-item__role">{{ e.role }}</div>
+      <div class="exp-item__company">{{ e.company }}</div>
+      <ul class="exp-item__bullets">
+        <li *ngFor="let b of e.bullets">{{ b }}</li>
+      </ul>
+    </div>
+  </div>
+</section>

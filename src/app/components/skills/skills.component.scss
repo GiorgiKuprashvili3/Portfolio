@@ -1,0 +1,55 @@
+.skills-section { margin-bottom: 3.5rem; }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.skill-group {
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  background: var(--surface);
+
+  &__cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+}
+
+.skill-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    padding: 5px 0;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0;
+    }
+  }
+}

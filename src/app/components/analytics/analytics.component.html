@@ -1,0 +1,52 @@
+<section id="analytics" class="analytics-section">
+  <div class="section-header"><h2>Analytics Showcase</h2></div>
+
+  <div class="viz-card">
+    <div class="viz-card__title">
+      Monthly Active Users — WebRTC Platform
+      <span>2023–2024</span>
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item">
+        <span class="legend-dot" style="background:#00FF9D"></span>MAU
+      </span>
+      <span class="legend-item">
+        <span class="legend-dot legend-dot--line" style="background:#00C8FF"></span>Rolling avg
+      </span>
+    </div>
+    <div class="chart-wrap chart-wrap--tall">
+      <canvas #mauChart role="img" aria-label="Bar chart of monthly active users Jan 2023 to Dec 2024 growing from 20k to 52k">
+        MAU growing from 20k to 52k over 2023–2024.
+      </canvas>
+    </div>
+  </div>
+
+  <div class="viz-row">
+    <div class="viz-card">
+      <div class="viz-card__title">Tech stack split <span>projects</span></div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#00FF9D"></span>Angular 45%</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#00C8FF"></span>React 30%</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span>Python 25%</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas #stackChart role="img" aria-label="Doughnut chart: Angular 45%, React 30%, Python 25%">
+          Angular 45%, React 30%, Python 25%.
+        </canvas>
+      </div>
+    </div>
+
+    <div class="viz-card">
+      <div class="viz-card__title">Load time improvement <span>SVG optimisation</span></div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#f87171"></span>Before</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#00FF9D"></span>After</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas #perfChart role="img" aria-label="Bar chart comparing load times before and after SVG optimisation">
+          Homepage dropped from 3.2s to 1.6s after optimisation.
+        </canvas>
+      </div>
+    </div>
+  </div>
+</section>
