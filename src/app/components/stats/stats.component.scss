@@ -1,8 +1,9 @@
+// ── Stats row ────────────────────────────────────────────────────────────────
 .stats-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
-  margin-bottom: 4rem;
+  margin-bottom: 0;
 }
 
 .stat-card {
@@ -24,4 +25,66 @@
     font-size: 12px;
     color: var(--muted);
   }
+}
+
+// ── Ticker ───────────────────────────────────────────────────────────────────
+.ticker-wrap {
+  margin-top: 0;
+  margin-bottom: 4rem;
+  overflow: hidden;
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  padding: 10px 0;
+  // Fade edges with a mask
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  // Total width = 2× content so we only need to translate 50% for a seamless loop
+  animation: ticker-scroll 28s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.ticker-item {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-right: 0; // spacing handled by dot
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+.ticker-dot {
+  color: var(--accent);
+  margin: 0 18px;
+  opacity: 0.5;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }

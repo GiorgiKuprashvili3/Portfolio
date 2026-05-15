@@ -12,4 +12,19 @@ import { Stat } from '../../models/portfolio.models';
 })
 export class StatsComponent {
   stats: Stat[] = inject(PortfolioService).getStats();
+
+  tickerItems: string[] = [
+    'Docker',
+    'REST APIs',
+    'Git',
+    '3+ yrs',
+    'Angular',
+    'TypeScript',
+    'RxJS',
+    'NgRx',
+    'Python',
+    'SQL',
+    'Figma',
+    'React',
+  ];
 }

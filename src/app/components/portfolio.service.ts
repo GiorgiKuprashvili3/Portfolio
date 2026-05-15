@@ -8,7 +8,7 @@ export class PortfolioService {
     return [
       { value: '3+',   label: 'years experience' },
       { value: '50K+', label: 'users reached'     },
-      { value: '8',    label: 'tech skills'        },
+      { value: '10+',    label: 'tech skills'        },
       { value: '2×',   label: 'load time gain'     },
     ];
   }
