@@ -1,55 +1,266 @@
 .skills-section { margin-bottom: 3.5rem; }
 
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
+.intro {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
 }
+.intro__prefix { color: var(--accent); }
 
-.skill-group {
-  border: 0.5px solid var(--border);
-  border-radius: 12px;
-  padding: 1.25rem;
-  background: var(--surface);
+// ── Split layout ────────────────────────────────────────────────────────────
+.split-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 16px;
+  align-items: stretch; // both panels grow to the same height
 
-  &__cat {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    font-weight: 700;
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
   }
 }
 
+// ── LEFT: Skill list ────────────────────────────────────────────────────────
 .skill-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 
-  li {
-    font-family: var(--sans);
-    font-size: 13px;
-    color: var(--text);
-    padding: 5px 0;
-    border-bottom: 0.5px solid var(--border);
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__count {
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+}
+
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
 
-    &:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
+  ul { display: flex; flex-direction: column; gap: 3px; }
+}
 
-    &::before {
-      content: '';
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent2);
-      flex-shrink: 0;
+// ── Skill items (project rows) ───────────────────────────────────────────────
+.skill-item {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 6px 8px;
+  transition: background 0.15s, opacity 0.2s;
+  border: 0.5px solid transparent;
+
+  &:hover { background: rgba(255,255,255,.05); }
+
+  &--dim { opacity: 0.25; }
+
+  &--active {
+    background: rgba(0,255,157,.06);
+    border-color: rgba(0,255,157,.2);
+  }
+
+  &--proj {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  // tech pills row
+  &--tech {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 0.5px solid rgba(0,255,157,.2);
+    border-radius: 4px;
+    background: rgba(0,255,157,.04);
+    transition: background 0.15s, opacity 0.2s, border-color 0.15s;
+
+    &:hover { background: rgba(0,255,157,.1); border-color: rgba(0,255,157,.4); }
+    &.skill-item--active { background: rgba(0,255,157,.15); border-color: var(--accent); }
+  }
+}
+
+.tech-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-direction: row !important;
+}
+
+.skill-item__name {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.skill-item__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.skill-item__tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(255,255,255,.04);
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+// ── RIGHT: Graph panel ──────────────────────────────────────────────────────
+.graph-panel {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &__legend {
+    display: flex;
+    gap: 14px;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
+  }
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &--proj-fe { background: #7dd3fc; }
+  &--proj-da { background: #fbbf24; }
+  &--tech    { background: var(--accent); }
+}
+
+// ── SVG canvas ───────────────────────────────────────────────────────────────
+.graph-svg {
+  width: 100%;
+  flex: 1;          // fills remaining height of the panel
+  min-height: 300px;
+  display: block;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 25% 30%, rgba(0,255,157,.04), transparent 50%),
+    radial-gradient(circle at 75% 70%, rgba(0,200,255,.04), transparent 50%);
+  cursor: default;
+}
+
+// ── Edges ────────────────────────────────────────────────────────────────────
+.edge {
+  stroke: rgba(255,255,255,.08);
+  stroke-width: 1;
+  transition: stroke .2s, stroke-width .2s;
+
+  &--dim    { stroke: rgba(255,255,255,.03); }
+  &--active { stroke: var(--accent); stroke-width: 1.5; }
+}
+
+// ── Nodes ────────────────────────────────────────────────────────────────────
+.node {
+  cursor: pointer;
+  transition: opacity .2s;
+
+  circle { transition: r .2s, fill-opacity .2s, stroke-width .2s; }
+
+  text {
+    font-family: var(--mono);
+    font-size: 13px;
+    fill: var(--text);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &--proj-fe {
+    circle { fill: #7dd3fc; fill-opacity: .15; stroke: #7dd3fc; stroke-width: 1; }
+  }
+
+  &--proj-da {
+    circle { fill: #fbbf24; fill-opacity: .15; stroke: #fbbf24; stroke-width: 1; }
+  }
+
+  &--tech {
+    circle { fill: var(--accent); fill-opacity: .8; stroke: var(--accent); stroke-width: 1; }
+    text   { fill: var(--text); font-weight: 700; }
+  }
+
+  &--dim    { opacity: .2; }
+
+  &--active {
+    circle { fill-opacity: 1; stroke-width: 2; }
+    text   { font-weight: 700; }
+  }
+}
+
+// ── Info bar ──────────────────────────────────────────────────────────────────
+.info-bar {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.025);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--muted);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  strong { color: var(--text); font-weight: 700; }
+}
+
+.tech-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: 4px;
+
+  span {
+    color: var(--accent);
+    padding: 0 6px;
+
+    &::before { content: '/'; color: var(--muted); margin-right: 4px; }
+    &:first-child::before { display: none; }
   }
 }

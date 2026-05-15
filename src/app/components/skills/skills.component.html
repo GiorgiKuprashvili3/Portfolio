@@ -1,12 +1,125 @@
 <section id="skills" class="skills-section">
   <div class="section-header"><h2>Skills</h2></div>
 
-  <div class="skills-grid">
-    <div class="skill-group" *ngFor="let g of skillGroups">
-      <div class="skill-group__cat">{{ g.category }}</div>
-      <ul class="skill-list">
-        <li *ngFor="let s of g.skills">{{ s }}</li>
-      </ul>
+  <p class="intro">
+    <span class="intro__prefix">// </span>projects connected by shared tech — click any node to highlight its neighbours
+  </p>
+
+  <div class="split-layout">
+
+    <!-- ── LEFT: Skill list ──────────────────────────────────────────── -->
+    <aside class="skill-list">
+      <div class="skill-list__header">
+        <span class="skill-list__count">{{ nodes.length }} nodes</span>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-group__label">
+          <span class="dot dot--proj-fe"></span>frontend
+        </p>
+        <ul>
+          <li *ngFor="let p of feProjects"
+              class="skill-item skill-item--proj"
+              [class.skill-item--active]="isNodeActive(p.id)"
+              [class.skill-item--dim]="isNodeDim(p.id)"
+              (click)="focusNodeById(p.id, $event)">
+            <span class="skill-item__name">{{ p.label }}</span>
+            <span class="skill-item__tags">
+              <span *ngFor="let t of p.tech" class="skill-item__tag">{{ t }}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-group__label">
+          <span class="dot dot--proj-da"></span>analytics
+        </p>
+        <ul>
+          <li *ngFor="let p of daProjects"
+              class="skill-item skill-item--proj"
+              [class.skill-item--active]="isNodeActive(p.id)"
+              [class.skill-item--dim]="isNodeDim(p.id)"
+              (click)="focusNodeById(p.id, $event)">
+            <span class="skill-item__name">{{ p.label }}</span>
+            <span class="skill-item__tags">
+              <span *ngFor="let t of p.tech" class="skill-item__tag">{{ t }}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <p class="skill-group__label">
+          <span class="dot dot--tech"></span>technologies
+        </p>
+        <ul class="tech-pill-list">
+          <li *ngFor="let t of techNodes"
+              class="skill-item skill-item--tech"
+              [class.skill-item--active]="isNodeActive(t.id)"
+              [class.skill-item--dim]="isNodeDim(t.id)"
+              (click)="focusNodeById(t.id, $event)">
+            {{ t.label }}
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ── RIGHT: Graph ──────────────────────────────────────────────── -->
+    <div class="graph-panel">
+      <div class="graph-meta">
+        <div class="graph-meta__legend">
+          <span><span class="dot dot--proj-fe"></span>frontend project</span>
+          <span><span class="dot dot--proj-da"></span>analytics project</span>
+          <span><span class="dot dot--tech"></span>technology</span>
+        </div>
+        <span>{{ feProjects.length + daProjects.length }} projects · {{ techNodes.length }} technologies</span>
+      </div>
+
+      <svg class="graph-svg" viewBox="0 0 800 480" (click)="clearFocus()">
+
+        <!-- Edges -->
+        <line
+          *ngFor="let e of edges"
+          [attr.x1]="e.x1" [attr.y1]="e.y1"
+          [attr.x2]="e.x2" [attr.y2]="e.y2"
+          class="edge"
+          [class.edge--dim]="isEdgeDim(e)"
+          [class.edge--active]="isEdgeActive(e)">
+        </line>
+
+        <!-- Nodes -->
+        <g *ngFor="let n of nodes"
+          class="node"
+          [class.node--proj-fe]="n.kind === 'project' && n.projectType === 'fe'"
+          [class.node--proj-da]="n.kind === 'project' && n.projectType === 'da'"
+          [class.node--tech]="n.kind === 'tech'"
+          [class.node--dim]="isNodeDim(n.id)"
+          [class.node--active]="isNodeActive(n.id)"
+          (click)="focusNode(n, $event)">
+
+          <circle [attr.cx]="n.x" [attr.cy]="n.y" [attr.r]="n.r"></circle>
+
+          <text
+            [attr.x]="n.x"
+            [attr.y]="n.kind === 'tech' ? n.y - n.r - 5 : n.y + n.r + 16"
+            text-anchor="middle">
+            {{ n.label }}
+          </text>
+
+        </g>
+      </svg>
+
+      <div class="info-bar">
+        <ng-container *ngIf="infoData; else placeholder">
+          <strong>{{ infoData.prefix }}</strong>
+          <span class="tech-list">
+            <span *ngFor="let item of infoData.items">{{ item }}</span>
+          </span>
+        </ng-container>
+        <ng-template #placeholder>// click a node to see its connections</ng-template>
+      </div>
     </div>
+
   </div>
 </section>
