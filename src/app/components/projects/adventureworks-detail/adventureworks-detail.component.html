@@ -1,0 +1,255 @@
+<article class="aw-card">
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- HEADER -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <header class="aw-head">
+    <div class="aw-head__left">
+      <div class="aw-head__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2.5"/>
+          <path d="M7 16V10M12 16V7M17 16v-4"/>
+        </svg>
+      </div>
+      <div class="aw-head__text">
+        <h1>AdventureWorks — Sales &amp; Profitability Analytics</h1>
+        <p>AdventureWorks 2022 · SQL Server · Excel · 4-year analysis (2011–2014)</p>
+      </div>
+    </div>
+
+    <div class="aw-head__right">
+      <ul class="aw-tags">
+        <li *ngFor="let t of tags" [attr.data-tone]="t.tone">{{ t.label }}</li>
+      </ul>
+      <a class="aw-close" aria-label="Close" (click)="close.emit()" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- TABS -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <nav class="aw-tabs" role="tablist">
+    <button
+      *ngFor="let t of tabs"
+      type="button"
+      role="tab"
+      [class.is-active]="activeTab() === t.id"
+      [attr.aria-selected]="activeTab() === t.id"
+      (click)="setTab(t.id)">
+      {{ t.label }}
+    </button>
+  </nav>
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- TAB PANES -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <div class="aw-pane">
+
+    <!-- ============= OVERVIEW ============= -->
+    <ng-container *ngIf="activeTab() === 'overview'">
+      <section class="aw-stats">
+        <div *ngFor="let s of keyStats"
+             class="aw-stat"
+             [attr.data-tone]="s.tone || null">
+          <span class="aw-stat__label">{{ s.label }}</span>
+          <span class="aw-stat__value">{{ s.value }}</span>
+          <span class="aw-stat__sub">{{ s.sub }}</span>
+        </div>
+      </section>
+
+      <p class="aw-lede">
+        This project analyzes four years of AdventureWorks bicycle company sales
+        data to answer five core business questions: seasonality, growth trends,
+        margin volatility, category profitability, and discount impact. The
+        analysis revealed that <strong>margin losses are driven not by weak
+        demand but by pricing failures</strong> — thousands of lines sold below
+        cost with zero discount recorded.
+      </p>
+
+      <section class="aw-insights">
+        <article *ngFor="let i of insights"
+                 class="aw-insight"
+                 [attr.data-tone]="i.tone">
+          <h3>{{ i.title }}</h3>
+          <p>{{ i.body }}</p>
+        </article>
+      </section>
+    </ng-container>
+
+    <!-- ============= CHARTS ============= -->
+    <ng-container *ngIf="activeTab() === 'charts'">
+      <div class="aw-charts">
+
+        <div class="aw-row aw-row--2">
+          <figure class="aw-chart">
+            <figcaption>Seasonality by Month <small>(normalised)</small></figcaption>
+            <div class="aw-canvas">
+              <canvas #chartCanvas data-chart="seasonality-month"></canvas>
+            </div>
+          </figure>
+          <figure class="aw-chart">
+            <figcaption>Seasonality by Quarter <small>(normalised)</small></figcaption>
+            <div class="aw-canvas">
+              <canvas #chartCanvas data-chart="seasonality-quarter"></canvas>
+            </div>
+          </figure>
+        </div>
+
+        <figure class="aw-chart">
+          <figcaption>Yearly Trend — Avg Monthly Revenue / Profit / Margin %</figcaption>
+          <div class="aw-canvas aw-canvas--tall">
+            <canvas #chartCanvas data-chart="yearly-trend"></canvas>
+          </div>
+        </figure>
+
+        <div class="aw-row aw-row--split">
+          <figure class="aw-chart">
+            <figcaption>Profit by Discount Bucket</figcaption>
+            <div class="aw-canvas aw-canvas--tall">
+              <canvas #chartCanvas data-chart="discount-effect"></canvas>
+            </div>
+          </figure>
+          <div class="aw-discount-table">
+            <table>
+              <thead>
+                <tr><th>Bucket</th><th>Margin</th><th>Profit</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of discountTable" [attr.data-tone]="r.tone">
+                  <td><strong>{{ r.bucket }}</strong></td>
+                  <td>{{ r.margin }}</td>
+                  <td>{{ r.profit | number:'1.0-0' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="aw-discount-note">
+              0% discount carries <strong>almost the entire profit pool</strong>.
+              Anything above 10% pushes the bucket into structural losses.
+            </p>
+          </div>
+        </div>
+
+        <figure class="aw-chart">
+          <figcaption>Category Profitability Overview</figcaption>
+          <div class="aw-canvas aw-canvas--tall">
+            <canvas #chartCanvas data-chart="category-profit"></canvas>
+          </div>
+        </figure>
+
+        <figure class="aw-chart">
+          <figcaption>Subcategory Profit vs Margin</figcaption>
+          <div class="aw-canvas aw-canvas--xtall">
+            <canvas #chartCanvas data-chart="subcategory-profit"></canvas>
+          </div>
+        </figure>
+
+        <figure class="aw-chart">
+          <figcaption>Category Profit by Year — stacked area</figcaption>
+          <div class="aw-canvas aw-canvas--tall">
+            <canvas #chartCanvas data-chart="category-area"></canvas>
+          </div>
+        </figure>
+
+      </div>
+    </ng-container>
+
+    <!-- ============= PRODUCTS ============= -->
+    <ng-container *ngIf="activeTab() === 'products'">
+      <p class="aw-lede">
+        Profit is overwhelmingly concentrated in a small set of SKUs. The top
+        twenty performers carry the business; another sixty SKUs leak losses
+        every quarter — almost entirely Road-650 variants, Touring frames, and
+        Jersey/Cap clothing lines.
+      </p>
+
+      <div class="aw-products">
+        <div class="aw-products__col aw-products__col--top">
+          <header>
+            <h3>Top 20 most profitable</h3>
+            <span class="aw-pill aw-pill--good">Winners</span>
+          </header>
+          <ol>
+            <li *ngFor="let p of topProducts">{{ p }}</li>
+          </ol>
+        </div>
+        <div class="aw-products__col aw-products__col--loss">
+          <header>
+            <h3>Top 20 loss-makers</h3>
+            <span class="aw-pill aw-pill--bad">Losers</span>
+          </header>
+          <ol>
+            <li *ngFor="let p of lossProducts">{{ p }}</li>
+          </ol>
+        </div>
+      </div>
+
+      <aside class="aw-callout">
+        <strong>Root cause:</strong> ListPrice − StandardCost is healthy on
+        almost every loss-maker. Losses come from the realised selling price
+        falling below <code>StandardCost</code> — a pricing-execution failure,
+        not a catalogue problem.
+      </aside>
+    </ng-container>
+
+    <!-- ============= INSIGHTS & RECS ============= -->
+    <ng-container *ngIf="activeTab() === 'insights'">
+      <section class="aw-findings">
+        <header>
+          <span class="aw-eyebrow">Findings</span>
+          <h2>What the data says</h2>
+        </header>
+        <ol>
+          <li *ngFor="let f of findings">{{ f }}</li>
+        </ol>
+      </section>
+
+      <section class="aw-recs">
+        <header>
+          <span class="aw-eyebrow">Recommendations</span>
+          <h2>Where to act</h2>
+        </header>
+        <div class="aw-recs__grid">
+          <article *ngFor="let r of recommendations"
+                   class="aw-rec"
+                   [attr.data-tone]="r.tone">
+            <h3>{{ r.title }}</h3>
+            <p>{{ r.body }}</p>
+          </article>
+        </div>
+      </section>
+    </ng-container>
+
+    <!-- ============= SQL ============= -->
+    <ng-container *ngIf="activeTab() === 'sql'">
+      <p class="aw-lede">
+        The pipeline runs in six phases against a SQL Server instance hosting
+        AdventureWorks 2022. Expand any phase to read the query and its
+        commentary.
+      </p>
+
+      <div class="aw-sql">
+        <details *ngFor="let phase of sqlPhases"
+                 [open]="phase.open"
+                 class="aw-sql__phase">
+          <summary>
+            <span class="aw-sql__title">{{ phase.title }}</span>
+            <span class="aw-sql__blurb">{{ phase.blurb }}</span>
+            <svg class="aw-sql__chevron" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </summary>
+          <pre class="aw-code"><code>{{ phase.code }}</code></pre>
+        </details>
+      </div>
+    </ng-container>
+
+  </div>
+</article>

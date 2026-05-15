@@ -31,12 +31,27 @@
       <div class="project-card__links">
         <a [href]="p.repoUrl" target="_blank" rel="noopener" class="project-link">
           <i class="ti ti-brand-github" aria-hidden="true"></i>
-          {{ p.type === 'da' ? 'notebook' : 'repo' }}
+          {{ p.repoLabel ?? (p.type === 'da' ? 'notebook' : 'repo') }}
         </a>
         <a *ngIf="p.liveUrl" [href]="p.liveUrl" target="_blank" rel="noopener" class="project-link">
           <i class="ti ti-external-link" aria-hidden="true"></i> live
         </a>
+        <button *ngIf="p.link" class="project-link project-link--detail" (click)="openModal(p)">
+          <i class="ti ti-layout-list" aria-hidden="true"></i> details
+        </button>
       </div>
     </article>
   </div>
 </section>
+
+<!-- ── MODAL OVERLAY ── -->
+<div *ngIf="activeModal() !== null" class="aw-modal-backdrop" (click)="closeModal()">
+  <div class="aw-modal-container" (click)="$event.stopPropagation()">
+    <app-adventureworks-detail
+      *ngIf="activeModal() === 'adventureworks'"
+      (close)="closeModal()" />
+    <app-covid-detail
+      *ngIf="activeModal() === 'covid'"
+      (close)="closeModal()" />
+  </div>
+</div>

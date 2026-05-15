@@ -1,0 +1,258 @@
+<article class="aw-card">
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- HEADER -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <header class="aw-head">
+    <div class="aw-head__left">
+      <div class="aw-head__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+        </svg>
+      </div>
+      <div class="aw-head__text">
+        <h1>COVID-19 — Impact &amp; Vaccination Effectiveness</h1>
+        <p>Our World in Data · SQL Server · Excel · 405,726 daily records (2020–2024)</p>
+      </div>
+    </div>
+
+    <div class="aw-head__right">
+      <ul class="aw-tags">
+        <li *ngFor="let t of tags" [attr.data-tone]="t.tone">{{ t.label }}</li>
+      </ul>
+      <a class="aw-close" aria-label="Close" (click)="close.emit()" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- TABS -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <nav class="aw-tabs" role="tablist">
+    <button
+      *ngFor="let t of tabs"
+      type="button"
+      role="tab"
+      [class.is-active]="activeTab() === t.id"
+      [attr.aria-selected]="activeTab() === t.id"
+      (click)="setTab(t.id)">
+      {{ t.label }}
+    </button>
+  </nav>
+
+  <!-- ──────────────────────────────────────────────────────── -->
+  <!-- TAB PANES -->
+  <!-- ──────────────────────────────────────────────────────── -->
+  <div class="aw-pane">
+
+    <!-- ============= OVERVIEW ============= -->
+    <ng-container *ngIf="activeTab() === 'overview'">
+      <section class="aw-stats">
+        <div *ngFor="let s of keyStats"
+             class="aw-stat"
+             [attr.data-tone]="s.tone || null">
+          <span class="aw-stat__label">{{ s.label }}</span>
+          <span class="aw-stat__value">{{ s.value }}</span>
+          <span class="aw-stat__sub">{{ s.sub }}</span>
+        </div>
+      </section>
+
+      <p class="aw-lede">
+        This project tests a single hypothesis against the global OWID
+        dataset: <strong>did higher vaccination rates reduce death rates
+        across countries?</strong> The answer is yes — but the cleaner
+        predictor is GDP per capita, which sets both vaccination coverage
+        and mortality. Income, more than geography or policy, separated
+        outcomes.
+      </p>
+
+      <section class="aw-insights">
+        <article *ngFor="let i of insights"
+                 class="aw-insight"
+                 [attr.data-tone]="i.tone">
+          <h3>{{ i.title }}</h3>
+          <p>{{ i.body }}</p>
+        </article>
+      </section>
+    </ng-container>
+
+    <!-- ============= CHARTS ============= -->
+    <ng-container *ngIf="activeTab() === 'charts'">
+      <div class="aw-charts">
+
+        <figure class="aw-chart">
+          <figcaption>Global Monthly Trend — Cases &amp; Deaths</figcaption>
+          <div class="aw-canvas aw-canvas--tall">
+            <canvas #chartCanvas data-chart="monthly-trend"></canvas>
+          </div>
+        </figure>
+
+        <div class="aw-row aw-row--split">
+          <figure class="aw-chart">
+            <figcaption>Vaccination Band → Avg Death Rate</figcaption>
+            <div class="aw-canvas aw-canvas--tall">
+              <canvas #chartCanvas data-chart="vax-effect"></canvas>
+            </div>
+          </figure>
+          <div class="aw-discount-table">
+            <table>
+              <thead>
+                <tr><th>Vax Band</th><th>Countries</th><th>Death Rate</th></tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let r of vaxBandTable" [attr.data-tone]="r.tone">
+                  <td><strong>{{ r.band }}</strong></td>
+                  <td>{{ r.countries }}</td>
+                  <td>{{ r.avgDeathRate }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="aw-discount-note">
+              The 80%+ band averages <strong>0.57%</strong> — less than half
+              the 1.40% seen below 20% vaccination. The 20–40% band looks
+              worse because it's dominated by middle-income countries
+              hit hard before vaccine access broadened.
+            </p>
+          </div>
+        </div>
+
+        <figure class="aw-chart">
+          <figcaption>GDP per Capita Band → Death Rate &amp; Vaccination</figcaption>
+          <div class="aw-canvas aw-canvas--tall">
+            <canvas #chartCanvas data-chart="gdp-effect"></canvas>
+          </div>
+        </figure>
+
+        <div class="aw-row aw-row--2">
+          <figure class="aw-chart">
+            <figcaption>Deaths per Million — by Continent</figcaption>
+            <div class="aw-canvas aw-canvas--tall">
+              <canvas #chartCanvas data-chart="continent-deaths"></canvas>
+            </div>
+          </figure>
+          <figure class="aw-chart">
+            <figcaption>Monthly CFR % — global decline over time</figcaption>
+            <div class="aw-canvas aw-canvas--tall">
+              <canvas #chartCanvas data-chart="cfr-decline"></canvas>
+            </div>
+          </figure>
+        </div>
+
+        <figure class="aw-chart">
+          <figcaption>Vaccination Rate vs Death Rate — country scatter</figcaption>
+          <div class="aw-canvas aw-canvas--xtall">
+            <canvas #chartCanvas data-chart="vax-scatter"></canvas>
+          </div>
+        </figure>
+
+      </div>
+    </ng-container>
+
+    <!-- ============= COUNTRIES ============= -->
+    <ng-container *ngIf="activeTab() === 'countries'">
+      <p class="aw-lede">
+        Country-level outcomes vary by an order of magnitude. The ten
+        countries below carry most of the absolute death toll, while the
+        ten highest-vaccination countries show how protection was unevenly
+        achieved — Gulf states and East Asia led; large parts of Sub-Saharan
+        Africa remained under 30% throughout the dataset.
+      </p>
+
+      <div class="aw-products">
+        <div class="aw-products__col aw-products__col--top">
+          <header>
+            <h3>Top 10 by total deaths</h3>
+            <span class="aw-pill aw-pill--bad">Highest toll</span>
+          </header>
+          <ol>
+            <li *ngFor="let c of topDeathCountries">
+              {{ c.name }} — <em>{{ c.deaths }}</em>
+              <span class="aw-rate">({{ c.rate }})</span>
+            </li>
+          </ol>
+        </div>
+        <div class="aw-products__col aw-products__col--loss">
+          <header>
+            <h3>Top 10 by vaccination rate</h3>
+            <span class="aw-pill aw-pill--good">Best protected</span>
+          </header>
+          <ol>
+            <li *ngFor="let c of topVaxCountries">
+              {{ c.name }} — <em>{{ c.vax }}</em>
+              <span class="aw-rate">(death rate {{ c.rate }})</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <aside class="aw-callout">
+        <strong>Note on apparent anomalies:</strong> Peru shows both high
+        vaccination (84%) and the highest death rate (4.88%) — its mortality
+        was concentrated in 2020–2021 <em>before</em> vaccines arrived. Africa's
+        low <code>deaths_per_million</code> almost certainly understates the
+        true toll because of limited testing infrastructure.
+      </aside>
+    </ng-container>
+
+    <!-- ============= INSIGHTS & RECS ============= -->
+    <ng-container *ngIf="activeTab() === 'insights'">
+      <section class="aw-findings">
+        <header>
+          <span class="aw-eyebrow">Findings</span>
+          <h2>What the data says</h2>
+        </header>
+        <ol>
+          <li *ngFor="let f of findings">{{ f }}</li>
+        </ol>
+      </section>
+
+      <section class="aw-recs">
+        <header>
+          <span class="aw-eyebrow">Recommendations</span>
+          <h2>Where to act</h2>
+        </header>
+        <div class="aw-recs__grid">
+          <article *ngFor="let r of recommendations"
+                   class="aw-rec"
+                   [attr.data-tone]="r.tone">
+            <h3>{{ r.title }}</h3>
+            <p>{{ r.body }}</p>
+          </article>
+        </div>
+      </section>
+    </ng-container>
+
+    <!-- ============= SQL ============= -->
+    <ng-container *ngIf="activeTab() === 'sql'">
+      <p class="aw-lede">
+        The analysis runs in six phases against a SQL Server instance
+        hosting the imported OWID daily file. Expand any phase to read
+        the query and its commentary.
+      </p>
+
+      <div class="aw-sql">
+        <details *ngFor="let phase of sqlPhases"
+                 [open]="phase.open"
+                 class="aw-sql__phase">
+          <summary>
+            <span class="aw-sql__title">{{ phase.title }}</span>
+            <span class="aw-sql__blurb">{{ phase.blurb }}</span>
+            <svg class="aw-sql__chevron" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </summary>
+          <pre class="aw-code"><code>{{ phase.code }}</code></pre>
+        </details>
+      </div>
+    </ng-container>
+
+  </div>
+</article>

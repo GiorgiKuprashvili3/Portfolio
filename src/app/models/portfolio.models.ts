@@ -5,7 +5,9 @@ export interface Project {
   description: string;
   tags: { label: string; variant: 'fe' | 'da' | 'green' }[];
   repoUrl: string;
+  repoLabel?: string;
   liveUrl?: string;
+  link?: string;
 }
 
 export interface SkillGroup {
