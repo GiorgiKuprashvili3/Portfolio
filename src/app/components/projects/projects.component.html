@@ -1,57 +1,70 @@
 <section id="projects" class="projects-section">
-  <div class="section-header"><h2>Projects</h2></div>
+  
+  <header class="hud-header">
+    <div class="hud-target-box">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <h2 class="hud-title">ACTIVE_PROJECTS</h2>
+    </div>
+    
+    <div class="hud-controls">
+      <button 
+        *ngFor="let f of filters" 
+        class="hud-btn" 
+        [ngClass]="{'active': activeFilter() === f.value}"
+        (click)="setFilter(f.value)">
+        [{{ f.label }}]
+      </button>
+    </div>
+  </header>
 
-  <div class="tabs">
-    <button
-      *ngFor="let f of filters"
-      class="tab"
-      [ngClass]="{ 'tab--active': activeFilter() === f.value }"
-      (click)="setFilter(f.value)"
-    >{{ f.label }}</button>
-  </div>
+  <div class="spotlight-grid" (mousemove)="onGridMouseMove($event)">
+    <article 
+      class="spotlight-card" 
+      *ngFor="let p of filteredProjects(); let i = index" 
+      #cardElement>
+      
+      <div class="card-border"></div>
+      
+      <div class="card-content">
+        <div class="tech-deco">
+          <span class="deco-id">OBJ_{{ i < 9 ? '0' + (i+1) : i+1 }}</span>
+          <span class="deco-type" [ngClass]="p.type">{{ p.type === 'fe' ? 'UI/UX' : 'DATA' }}</span>
+        </div>
 
-  <div class="projects-grid">
-    <article class="project-card" *ngFor="let p of filteredProjects()">
-      <div class="project-card__type" [ngClass]="{ 'project-card__type--da': p.type === 'da' }">
-        <span class="dot"></span>
-        {{ p.type === 'fe' ? 'frontend' : 'analytics' }}
-      </div>
+        <h3 class="chroma-title" [attr.data-text]="p.title">{{ p.title }}</h3>
+        
+        <p class="card-desc">{{ p.description }}</p>
 
-      <h3 class="project-card__title">{{ p.title }}</h3>
-      <p class="project-card__desc">{{ p.description }}</p>
+        <div class="tag-cluster">
+          <span class="hud-tag" *ngFor="let t of p.tags">{{ t.label }}</span>
+        </div>
 
-      <div class="project-card__tags">
-        <span
-          *ngFor="let t of p.tags"
-          class="tag"
-          [ngClass]="'tag--' + t.variant"
-        >{{ t.label }}</span>
-      </div>
-
-      <div class="project-card__links">
-        <a [href]="p.repoUrl" target="_blank" rel="noopener" class="project-link">
-          <i class="ti ti-brand-github" aria-hidden="true"></i>
-          {{ p.repoLabel ?? (p.type === 'da' ? 'notebook' : 'repo') }}
-        </a>
-        <a *ngIf="p.liveUrl" [href]="p.liveUrl" target="_blank" rel="noopener" class="project-link">
-          <i class="ti ti-external-link" aria-hidden="true"></i> live
-        </a>
-        <button *ngIf="p.link" class="project-link project-link--detail" (click)="openModal(p)">
-          <i class="ti ti-layout-list" aria-hidden="true"></i> details
-        </button>
+        <div class="action-bar">
+          <a [href]="p.repoUrl" target="_blank" class="action-link">
+            <span class="bracket"><</span> SRC <span class="bracket">></span>
+          </a>
+          <a *ngIf="p.liveUrl" [href]="p.liveUrl" target="_blank" class="action-link">
+            <span class="bracket"><</span> LIVE <span class="bracket">></span>
+          </a>
+          <button *ngIf="p.link" class="action-btn" (click)="openModal(p)">
+            ACCESS_DATA
+          </button>
+        </div>
       </div>
     </article>
   </div>
 </section>
 
-<!-- ── MODAL OVERLAY ── -->
-<div *ngIf="activeModal() !== null" class="aw-modal-backdrop" (click)="closeModal()">
-  <div class="aw-modal-container" (click)="$event.stopPropagation()">
-    <app-adventureworks-detail
-      *ngIf="activeModal() === 'adventureworks'"
-      (close)="closeModal()" />
-    <app-covid-detail
-      *ngIf="activeModal() === 'covid'"
-      (close)="closeModal()" />
+<div *ngIf="activeModal() !== null" class="modal-backdrop" (click)="closeModal()">
+  
+  <button class="cyber-close-btn" (click)="closeModal()">
+    <span class="btn-text">SYS_EXIT</span>
+    <span class="btn-icon">[X]</span>
+  </button>
+
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <app-adventureworks-detail *ngIf="activeModal() === 'adventureworks'" (close)="closeModal()" />
+    <app-covid-detail *ngIf="activeModal() === 'covid'" (close)="closeModal()" />
   </div>
 </div>

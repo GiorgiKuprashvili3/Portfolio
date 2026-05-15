@@ -1,4 +1,12 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+  QueryList,
+  ViewChildren,
+  ElementRef
+} from '@angular/core';
 import { NgFor, NgIf, NgClass } from '@angular/common';
 import { PortfolioService } from '../portfolio.service';
 import { Project } from '../../models/portfolio.models';
@@ -22,6 +30,8 @@ export class ProjectsComponent {
   activeFilter = signal<Filter>('all');
   activeModal = signal<ModalKind>(null);
 
+  @ViewChildren('cardElement') cardElements!: QueryList<ElementRef<HTMLDivElement>>;
+
   filteredProjects = computed(() =>
     this.activeFilter() === 'all'
       ? this.allProjects
@@ -29,28 +39,38 @@ export class ProjectsComponent {
   );
 
   filters: { label: string; value: Filter }[] = [
-    { label: 'all',      value: 'all' },
-    { label: 'frontend', value: 'fe'  },
-    { label: 'analytics',value: 'da'  },
+    { label: 'SYS_ALL',       value: 'all' },
+    { label: 'FRONT_END',     value: 'fe'  },
+    { label: 'DATA_ANALYTICS',value: 'da'  },
   ];
 
   setFilter(f: Filter): void {
     this.activeFilter.set(f);
   }
 
-  /** Map a project's `link` to a modal kind. */
-  private modalKindFor(project: Project): ModalKind {
-    if (!project.link) return null;
-    if (project.link.includes('covid'))          return 'covid';
-    if (project.link.includes('adventureworks')) return 'adventureworks';
-    return null;
+  onGridMouseMove(event: MouseEvent) {
+    if (!this.cardElements) return;
+    
+    this.cardElements.forEach((cardRef) => {
+      const card = cardRef.nativeElement;
+      const rect = card.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
   }
 
   openModal(project: Project): void {
-    const kind = this.modalKindFor(project);
-    if (!kind) return;
-    this.activeModal.set(kind);
-    document.body.style.overflow = 'hidden';
+    if (!project.link) return;
+    const kind = project.link.includes('covid') ? 'covid' : 
+                 project.link.includes('adventureworks') ? 'adventureworks' : null;
+    
+    if (kind) {
+      this.activeModal.set(kind);
+      document.body.style.overflow = 'hidden';
+    }
   }
 
   closeModal(): void {
