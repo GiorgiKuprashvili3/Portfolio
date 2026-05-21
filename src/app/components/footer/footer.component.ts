@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   standalone: true,
   template: `
     <footer class="footer">
-      // built with Angular &nbsp;·&nbsp; Giorgi Kuprashvili &nbsp;·&nbsp; 2025
+      // built with Angular &nbsp;·&nbsp; Giorgi Kuprashvili &nbsp;·&nbsp; 2026
     </footer>
   `,
   styles: [`
