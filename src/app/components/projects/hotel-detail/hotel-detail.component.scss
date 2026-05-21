@@ -1,0 +1,171 @@
+:host {
+  --h-bg:      #0A0E14;
+  --h-card:    #10141B;
+  --h-line2:  rgba(255,255,255,0.12);
+  --h-text:   #E5E7EB;
+  --h-muted:  #9CA3AF;
+  --h-blue:   #60A5FA;
+  --h-cyan:   #38BDF8;
+  --h-green:  #34D399;
+  --h-mono: 'Space Mono', ui-monospace, monospace;
+  --h-sans: 'DM Sans', 'Inter', system-ui, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--h-bg);
+  color: var(--h-text);
+  font-family: var(--h-sans);
+  height: 100%;
+  min-height: 90vh;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+/* Header */
+.hotel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hotel-head__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hotel-head__icon {
+  flex-shrink: 0;
+  width: 2.75rem; height: 2.75rem;
+  border: 1px solid var(--h-line2);
+  border-radius: .5rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--h-cyan);
+  svg { width: 1.25rem; height: 1.25rem; }
+}
+
+.hotel-head__text {
+  h1 { font-size: clamp(.95rem, 2.5vw, 1.25rem); font-weight: 700; margin: 0 0 .2rem; }
+  p  { font-size: .75rem; color: var(--h-muted); margin: 0; font-family: var(--h-mono); }
+}
+
+.hotel-head__right {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.hotel-head__actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* Tags */
+.hotel-tags {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: .35rem;
+
+  li {
+    padding: .18rem .55rem;
+    border-radius: .3rem;
+    font-size: .68rem;
+    font-family: var(--h-mono);
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+
+    &[data-tone="blue"]  { color: var(--h-blue);  border-color: rgba(96,165,250,.35);  background: rgba(96,165,250,.08);  }
+    &[data-tone="cyan"]  { color: var(--h-cyan);  border-color: rgba(56,189,248,.35);  background: rgba(56,189,248,.08);  }
+    &[data-tone="green"] { color: var(--h-green); border-color: rgba(52,211,153,.35);  background: rgba(52,211,153,.08);  }
+  }
+}
+
+/* Action links */
+.hotel-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .7rem;
+  border-radius: .4rem;
+  font-size: .74rem;
+  font-family: var(--h-mono);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--h-line2);
+  color: var(--h-muted);
+  transition: color .2s, border-color .2s, background .2s;
+
+  &:hover { color: var(--h-text); border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.05); }
+
+  &--primary {
+    color: var(--h-cyan);
+    border-color: rgba(56,189,248,.4);
+    background: rgba(56,189,248,.07);
+    &:hover { background: rgba(56,189,248,.15); border-color: rgba(56,189,248,.6); color: var(--h-cyan); }
+  }
+}
+
+/* Close */
+.hotel-close {
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--h-line2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--h-muted);
+  transition: color .2s, border-color .2s;
+  svg { width: 1rem; height: 1rem; }
+  &:hover { color: var(--h-text); border-color: rgba(255,255,255,.25); }
+}
+
+/* Iframe wrapper */
+.hotel-iframe-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 7rem);
+  min-height: 600px;
+  border-radius: .75rem;
+  overflow: hidden;
+  border: 1px solid var(--h-line2);
+  background: var(--h-card);
+}
+
+.hotel-iframe-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: var(--h-card);
+  z-index: 2;
+
+  p { font-family: var(--h-mono); font-size: .82rem; color: var(--h-muted); margin: 0; }
+}
+
+.loader-ring {
+  width: 2.5rem; height: 2.5rem;
+  border: 3px solid rgba(255,255,255,.08);
+  border-top-color: var(--h-cyan);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hotel-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+
+  &--visible { opacity: 1; }
+}

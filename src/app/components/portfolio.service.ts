@@ -42,6 +42,20 @@ export class PortfolioService {
         liveUrl: '#',
       },
       {
+        id: 10,
+        type: 'fe',
+        title: 'Hotel Booking Platform',
+        description: 'A modern online accommodation booking web application with seamless user flow, dynamic availability tracking, and a responsive booking interface.',
+        tags: [
+          { label: 'Angular',          variant: 'fe' },
+          { label: 'TypeScript',       variant: 'fe' },
+          { label: 'Responsive Design', variant: 'fe' },
+        ],
+        repoUrl: 'https://github.com/GiorgiKuprashvili3/Hotel-booking',
+        liveUrl: 'https://hotel-booking-liart-nine.vercel.app/',
+        repoLabel: 'repo',
+      },
+      /* {
         id: 3,
         type: 'fe',
         title: 'SVG Template Engine',
@@ -52,8 +66,8 @@ export class PortfolioService {
           { label: 'TypeScript',  variant: 'fe' },
         ],
         repoUrl: '#',
-      },
-      {
+      }, */
+      /* {
         id: 4,
         type: 'da',
         title: 'Sales Trend Analysis',
@@ -64,8 +78,8 @@ export class PortfolioService {
           { label: 'Matplotlib', variant: 'da' },
         ],
         repoUrl: '#',
-      },
-      {
+      }, */
+      /* {
         id: 5,
         type: 'da',
         title: 'User Behaviour Dashboard',
@@ -76,7 +90,7 @@ export class PortfolioService {
           { label: 'Google Analytics', variant: 'green' },
         ],
         repoUrl: '#',
-      },
+      }, */
       {
         id: 7,
         type: 'da',
@@ -106,6 +120,20 @@ export class PortfolioService {
         link: '/projects/covid',
       },
       {
+        id: 9,
+        type: 'da',
+        title: 'Customer Segmentation (RFM + K-Means)',
+        description: 'Identified meaningful customer groups using RFM analysis and K-Means clustering (K=4) on online retail data to optimise marketing strategies.',
+        tags: [
+          { label: 'Python',       variant: 'da' },
+          { label: 'Scikit-learn', variant: 'da' },
+          { label: 'Machine Learning', variant: 'green' },
+        ],
+        repoUrl: 'https://github.com/GiorgiKuprashvili3/Customer_Segmentation-c8047c8c1e82a659404a3096b88c92b30771f800',
+        repoLabel: 'repo',
+        link: '/projects/customer-segmentation',
+      },
+      /* {
         id: 6,
         type: 'da',
         title: 'Performance Benchmarking',
@@ -116,7 +144,7 @@ export class PortfolioService {
           { label: 'Angular',    variant: 'fe' },
         ],
         repoUrl: '#',
-      },
+      }, */
     ];
   }
 
@@ -143,25 +171,37 @@ export class PortfolioService {
 
   getExperience(): Experience[] {
     return [
+     // Add this to your getExperience() method in src/app/components/portfolio.service.ts
+
+{
+  dateRange: 'Sep 2024 — present',
+  role: 'Frontend Developer',
+  company: 'Freelance / Self-Employed',
+  bullets: [
+    'Engineered high-performance web applications using Angular and React, delivering custom UI solutions for diverse client requirements.',
+    'Led end-to-end development of responsive interfaces, improving mobile conversion rates by 25% through mobile-first optimization.',
+    'Integrated Python-based data analysis pipelines into client dashboards, enabling stakeholders to visualize key performance indicators.',
+    'Optimized frontend build times by 30% through modular component architecture and efficient dependency management.',
+    'Collaborated directly with clients to translate complex business needs into intuitive, scalable software features.',
+    'Maintained 99.9% uptime by proactively identifying and patching production bugs across multiple client deployments.',
+    'Leveraged Google Analytics to track user engagement, refining UI layouts to decrease bounce rates by 15%.'
+  ],
+},
       {
-        dateRange: 'Sep 2024 — present',
-        role: 'Frontend Developer',
-        company: 'Freelance / Self-Employed',
-        bullets: [
-          'Responsive web interfaces with Angular, React, HTML5, SCSS, TypeScript.',
-          'Collaborated directly with clients to deliver user-focused UI components.',
-          'Added Python-based data analysis to client projects where insights were needed.',
-        ],
-      },
-      {
-        dateRange: 'Jun 2022 — Sep 2024',
-        role: 'Frontend Developer',
+        dateRange: 'June 2022 — Sept 2024',
+        role: 'Frontend Developer (Angular, React)',
         company: 'Omedia (Discovery Inc.)',
         bullets: [
-          'Fixed complex WebRTC bug enabling real-time video calls for 50k+ users.',
-          'Optimised SVG template pipeline — 2× reduction in page load time.',
-          'Built booking and messaging systems for doctors and patients.',
-          'Conducted unit testing, used Google Analytics for data-driven improvements.',
+          'Managed a complex bug fix in frontend for using Real-time Video communication (WebRTC 101)',
+          'Unleashed full power of SVG Templates in Angular which reduced loading time by 2 times',
+          'Developed lots of useful features which are used by more than 50 thousand people including: Audio and video calls, automized booking system for patients and doctors...',
+          'Enhanced functionality and performance',
+          'Implemented responsive design principles',
+          'Made booking system for doctors and patients',
+          'Made messaging system for doctors and patients',
+          'Conducted comprehensive testing, including unit tests, to ensure reliability.',
+          'Kept and updated with latest front-end technologies',
+          'Affectively used google analytics'
         ],
       },
     ];

@@ -1,0 +1,97 @@
+<div class="fe-overlay" (click)="onClose()">
+
+  <!-- Browser chrome topbar -->
+  <div class="browser-chrome" (click)="$event.stopPropagation()">
+    <div class="chrome-dots">
+      <span class="dot dot--red"   (click)="onClose()"></span>
+      <span class="dot dot--amber"></span>
+      <span class="dot dot--green"></span>
+    </div>
+
+    <div class="chrome-address">
+      <span class="address-icon">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </span>
+      <span class="address-text">
+        {{ hasLiveUrl ? project.liveUrl : 'localhost:4200 · ' + project.title }}
+      </span>
+    </div>
+
+    <div class="chrome-actions">
+      <a
+        *ngIf="project.repoUrl && project.repoUrl !== '#'"
+        [href]="project.repoUrl"
+        target="_blank"
+        class="chrome-btn chrome-btn--repo">
+        &lt; SRC &gt;
+      </a>
+      <button class="chrome-btn chrome-btn--close" (click)="onClose()">✕ CLOSE</button>
+    </div>
+  </div>
+
+  <!-- Content area -->
+  <div class="browser-body" (click)="$event.stopPropagation()">
+
+    <!-- ── LIVE IFRAME (when liveUrl is set) ─────────────────── -->
+    <ng-container *ngIf="hasLiveUrl">
+      <div class="iframe-loader" *ngIf="!iframeLoaded() && !iframeError()">
+        <span class="loader-dot"></span>
+        <span class="loader-dot"></span>
+        <span class="loader-dot"></span>
+        <span class="loader-label">LOADING_PREVIEW</span>
+      </div>
+      <div class="iframe-err" *ngIf="iframeError()">
+        <span>PREVIEW_UNAVAILABLE — site may block embedding</span>
+        <a [href]="project.liveUrl" target="_blank" class="chrome-btn chrome-btn--repo" style="margin-top:1rem">
+          OPEN IN NEW TAB ↗
+        </a>
+      </div>
+      <iframe
+        *ngIf="!iframeError()"
+        [src]="project.liveUrl"
+        [class.is-loaded]="iframeLoaded()"
+        (load)="onIframeLoad()"
+        (error)="onIframeError()"
+        sandbox="allow-scripts allow-same-origin allow-forms"
+        title="Live preview of {{ project.title }}"
+      ></iframe>
+    </ng-container>
+
+    <!-- ── NO-URL PLACEHOLDER (until project is deployed) ──────── -->
+    <ng-container *ngIf="!hasLiveUrl && detail">
+      <div class="placeholder">
+
+        <div class="ph-topbar">
+          <div class="ph-chip ph-chip--fe">UI / FRONTEND</div>
+          <div class="ph-stack">
+            <span *ngFor="let s of detail.stack" class="ph-tag">{{ s }}</span>
+          </div>
+        </div>
+
+        <h2 class="ph-title">{{ project.title }}</h2>
+        <p class="ph-headline">{{ detail.headline }}</p>
+
+        <ul class="ph-bullets">
+          <li *ngFor="let b of detail.bullets">
+            <span class="bullet-arrow">▸</span> {{ b }}
+          </li>
+        </ul>
+
+        <div class="ph-deploy-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+          Deploy to Vercel / Netlify / Firebase and add the URL to
+          <code>liveUrl</code> in <code>portfolio.service.ts</code> to enable live preview.
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

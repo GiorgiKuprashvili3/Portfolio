@@ -1,0 +1,135 @@
+<article class="aw-card">
+  <header class="aw-head">
+    <div class="aw-head__left">
+      <div class="aw-head__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"/>
+        </svg>
+      </div>
+      <div class="aw-head__text">
+        <h1>Customer Segmentation — RFM & K-Means Clustering</h1>
+        <p>Python · Scikit-learn · Pandas · Online Retail II Dataset</p>
+      </div>
+    </div>
+
+    <div class="aw-head__right">
+      <ul class="aw-tags">
+        <li *ngFor="let t of tags" [attr.data-tone]="t.tone">{{ t.label }}</li>
+      </ul>
+      <a class="aw-close" aria-label="Close" (click)="close.emit()" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <nav class="aw-tabs">
+    <button *ngFor="let tab of tabs" 
+            [class.active]="activeTab() === tab.id"
+            (click)="setTab(tab.id)">
+      {{ tab.label }}
+    </button>
+  </nav>
+
+  <div class="aw-pane" [ngSwitch]="activeTab()">
+    
+    <div *ngSwitchCase="'overview'" class="aw-overview">
+      <div class="aw-stats">
+        <div class="aw-stat" *ngFor="let s of keyStats" [attr.data-tone]="s.tone">
+          <div class="aw-stat__val">{{ s.value }}</div>
+          <div class="aw-stat__lbl">{{ s.label }}</div>
+          <div class="aw-stat__sub">{{ s.sub }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'charts'" class="aw-charts">
+      <div class="aw-row--2">
+        <section class="aw-box">
+          <header>
+            <h2>Cluster Distribution</h2>
+            <p>Population split across the 4 K-Means clusters</p>
+          </header>
+          <div class="aw-canvas">
+            <canvas #chartCanvas></canvas>
+          </div>
+        </section>
+
+        <section class="aw-box">
+          <header>
+            <h2>Centroid Averages</h2>
+            <p>Mean Recency and Frequency per Cluster</p>
+          </header>
+          <div class="aw-canvas">
+            <canvas #chartCanvas></canvas>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'segments'" class="aw-countries">
+      <div class="aw-box aw-box--table">
+        <header>
+          <h2>RFM Segments Data</h2>
+          <p>Key metrics aggregated by assigned cluster</p>
+        </header>
+        <div class="aw-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Segment Name</th>
+                <th class="text-right">Population</th>
+                <th class="text-right">Avg Recency (Days)</th>
+                <th class="text-right">Avg Frequency</th>
+                <th class="text-right">Avg Monetary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of segmentTable">
+                <td class="font-medium" [attr.data-tone]="row.tone">{{ row.name }}</td>
+                <td class="text-right">{{ row.users }}</td>
+                <td class="text-right">{{ row.r }}</td>
+                <td class="text-right">{{ row.f }}</td>
+                <td class="text-right">{{ row.m }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="'insights'" class="aw-insights">
+      <article class="aw-insight-card" *ngFor="let i of insights" [attr.data-tone]="i.tone">
+        <div class="aw-insight-card__icon"></div>
+        <div class="aw-insight-card__text">
+          <h3>{{ i.title }}</h3>
+          <p>{{ i.body }}</p>
+        </div>
+      </article>
+    </div>
+
+    <div *ngSwitchCase="'python'" class="aw-sql">
+      <div class="aw-box aw-box--sql">
+        <header>
+          <h2>Data Processing & Clustering Script</h2>
+          <p>Key Python excerpts for RFM aggregation and Scikit-Learn K-Means application.</p>
+        </header>
+        <div class="aw-sql__phases">
+          <details *ngFor="let phase of codePhases" [open]="phase.open" class="aw-sql__phase" (click)="togglePhase(phase)">
+            <summary>
+              <span class="aw-sql__title">{{ phase.title }}</span>
+              <span class="aw-sql__blurb">{{ phase.blurb }}</span>
+              <svg class="aw-sql__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <pre class="aw-code"><code>{{ phase.code }}</code></pre>
+          </details>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>
