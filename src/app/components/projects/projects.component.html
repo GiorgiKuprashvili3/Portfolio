@@ -66,5 +66,7 @@
   <div class="modal-container" (click)="$event.stopPropagation()">
     <app-adventureworks-detail *ngIf="activeModal() === 'adventureworks'" (close)="closeModal()" />
     <app-covid-detail *ngIf="activeModal() === 'covid'" (close)="closeModal()" />
+    
+    <app-customer-segmentation-detail *ngIf="activeModal() === 'customer-segmentation'" (close)="closeModal()" />
   </div>
 </div>

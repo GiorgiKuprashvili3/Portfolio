@@ -12,14 +12,25 @@ import { PortfolioService } from '../portfolio.service';
 import { Project } from '../../models/portfolio.models';
 import { AdventureworksDetailComponent } from './adventureworks-detail/adventureworks-detail.component';
 import { CovidDetailComponent } from './covid-detail/covid-detail.component';
+// 1. Import the Customer Segmentation Component
+import { CustomerSegmentationDetailComponent } from './customer-segmentation-detail/customer-segmentation-detail.component';
 
 type Filter = 'all' | 'fe' | 'da';
-type ModalKind = 'adventureworks' | 'covid' | null;
+// 2. Add 'customer-segmentation' to your allowed modal states
+type ModalKind = 'adventureworks' | 'covid' | 'customer-segmentation' | null;
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [NgFor, NgIf, NgClass, AdventureworksDetailComponent, CovidDetailComponent],
+  // 3. Add CustomerSegmentationDetailComponent to imports
+  imports: [
+    NgFor, 
+    NgIf, 
+    NgClass, 
+    AdventureworksDetailComponent, 
+    CovidDetailComponent, 
+    CustomerSegmentationDetailComponent
+  ],
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
 })
@@ -64,8 +75,11 @@ export class ProjectsComponent {
 
   openModal(project: Project): void {
     if (!project.link) return;
+    
+    // 4. Update conditional mapping to support customer segmentation
     const kind = project.link.includes('covid') ? 'covid' : 
-                 project.link.includes('adventureworks') ? 'adventureworks' : null;
+                 project.link.includes('adventureworks') ? 'adventureworks' : 
+                 project.link.includes('customer-segmentation') ? 'customer-segmentation' : null;
     
     if (kind) {
       this.activeModal.set(kind);
